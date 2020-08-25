@@ -64,5 +64,4 @@ done
 
 echo "source /usr/share/bash-completion/bash_completion" >> /root/.bashrc
 echo "complete -F __start_kubectl k" >> /root/.bashrc
-echo "setup completed" >> /root/setup-completed
 ```
