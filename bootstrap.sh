@@ -88,3 +88,6 @@ subjects:
 EOF
 kubectl apply -f /root/kubernetes-dashboard.yml
 rm -f /root/kubernetes-dashboard.yml
+
+echo "alias k=kubectl" >> /root/.bash_aliases
+kubectl completion bash >/etc/bash_completion.d/kubectl
