@@ -7,12 +7,12 @@ endif
 
 check-version:
 ifndef K3S_VERSION
-  $(error K3S_VERSION is undefined. Find your version on https://github.com/rancher/k3s, example: v1.17.4)
+  $(error K3S_VERSION is undefined. Find your version on https://github.com/k3s-io/k3s, example: v1.17.4)
 endif
 
 check-tag:
 ifndef K3S_TAG
-  $(error K3S_TAG is undefined. Find your tag on https://github.com/rancher/k3s, example: v1.17.4+k3s1)
+  $(error K3S_TAG is undefined. Find your tag on https://github.com/k3s-io/k3s, example: v1.17.4+k3s1)
 endif
 
 build: check-project check-version check-tag

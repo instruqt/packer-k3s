@@ -10,7 +10,13 @@ What's includes:
 - Kubectl completion (see section on how to enable kubectl autocompletion)
 
 ## Current active images
-Images are built upon releases on the [K3s repo](https://github.com/rancher/k3s). This is a list of images available:
+Images are built upon releases on the [K3s repo](https://github.com/k3s-io/k3s). This is a list of images available:
+
+`instruqt/k3s-v1-20-4`
+
+`instruqt/k3s-v1-19-8`
+
+`instruqt/k3s-v1-18-16`
 
 `instruqt/k3s-v1-18-8`
 
@@ -44,7 +50,7 @@ Use the following config in your Instruqt config.yml to use this image:
 version: "2"
 virtualmachines:
 - name: kubernetes
-  image: instruqt/k3s-v1-18-8
+  image: instruqt/k3s-v1-20-4
   shell: /usr/bin/start.sh
   machine_type: n1-standard-2
 ```
@@ -54,7 +60,7 @@ Use the following config in your Instruqt track:
 ![Instruqt web interface](./screenshot.jpg "Instruqt web interface")
 
 ## Enabling kubectl autocompletion
-To enable kubectl autocompletion, add the following lines to the `setup` script of your first challenge:
+To enable kubectl autocompletion, add the following lines to the `setup` script of your **first** challenge:
 ```bash
 #!/bin/bash
 until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]

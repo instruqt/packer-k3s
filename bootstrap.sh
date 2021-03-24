@@ -60,13 +60,13 @@ cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
 kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm repo add stable https://charts.helm.sh/stable
 
 GITHUB_URL=https://github.com/kubernetes/dashboard/releases
 VERSION_KUBE_DASHBOARD=$(curl -w '%{url_effective}' -I -L -s -S ${GITHUB_URL}/latest -o /dev/null | sed -e 's|.*/||')
 kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/${VERSION_KUBE_DASHBOARD}/aio/deploy/recommended.yaml
 
-cat <<EOF >/root/kubernetes-dashboard.yml
+cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -86,8 +86,6 @@ subjects:
   name: admin-user
   namespace: kubernetes-dashboard
 EOF
-kubectl apply -f /root/kubernetes-dashboard.yml
-rm -f /root/kubernetes-dashboard.yml
 
 echo "alias k=kubectl" >> /root/.bash_aliases
 kubectl completion bash >/etc/bash_completion.d/kubectl
