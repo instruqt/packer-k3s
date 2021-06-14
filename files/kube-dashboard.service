@@ -1,0 +1,11 @@
+[Unit]
+Description=Kube Dashboard
+After=k3s.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c "while ! kubectl apply -f /opt/kube-dashboard/dashboard.yml; do sleep 1; done"
+ExecStart=/bin/bash -c "while ! kubectl apply -f /opt/kube-dashboard/dashboard-sa.yml; do sleep 1; done"
+
+[Install]
+WantedBy=multi-user.target
