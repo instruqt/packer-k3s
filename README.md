@@ -82,7 +82,7 @@ The configuration for the Control Plane server is exactly the same as for a sing
 
 This will switch it's runtime mode to Worker, and will join the cluster defined by the Control Plane server.
 
-Example configuration:
+### Example config.yml
 
 ```yaml
 version: "2"
