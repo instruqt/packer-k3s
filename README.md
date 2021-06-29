@@ -96,13 +96,13 @@ virtualmachines:
   shell: /bin/bash
   machine_type: n1-standard-2
   environment:
-    K3S_CONTROL_PLANE_SERVER: server
+    K3S_CONTROL_PLANE_HOSTNAME: server
 - name: worker2
   image: instruqt/k3s-v1-21-1
   shell: /bin/bash
   machine_type: n1-standard-2
   environment:
-    K3S_CONTROL_PLANE_SERVER: server
+    K3S_CONTROL_PLANE_HOSTNAME: server
 ```
 
 ## Enabling kubectl autocompletion
