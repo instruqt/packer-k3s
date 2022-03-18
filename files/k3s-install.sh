@@ -11,6 +11,7 @@ hostnamectl set-hostname kubernetes
 sed -i 's/localhost$/localhost kubernetes/' /etc/hosts
 
 ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+echo "options single-request" >> /run/systemd/resolve/resolv.conf
 
 echo "waiting 180 seconds for cloud-init to update /etc/apt/sources.list"
 timeout 180 /bin/bash -c \
