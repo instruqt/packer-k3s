@@ -11,7 +11,6 @@ hostnamectl set-hostname kubernetes
 sed -i 's/localhost$/localhost kubernetes/' /etc/hosts
 
 ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
-echo "options single-request" >> /run/systemd/resolve/resolv.conf
 
 echo "waiting 180 seconds for cloud-init to update /etc/apt/sources.list"
 timeout 180 /bin/bash -c \
@@ -32,7 +31,10 @@ apt-get -y install \
     unzip \
     bash-completion \
     dnsutils \
-    iputils-ping
+    iputils-ping \
+    resolvconf
+
+resolvconf -u
 
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
