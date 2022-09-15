@@ -21,6 +21,14 @@ What's includes:
 ## Current active images
 Images are built upon releases on the [K3s repo](https://github.com/k3s-io/k3s). This is a list of images available:
 
+`instruqt/k3s-v1-25-0`
+
+`instruqt/k3s-v1-24-4`
+
+
+<details>
+  <summary>List of deprecated images</summary>
+
 `instruqt/k3s-v1-21-1`
 
 `instruqt/k3s-v1-20-4`
@@ -50,6 +58,7 @@ Images are built upon releases on the [K3s repo](https://github.com/k3s-io/k3s).
 `instruqt/k3s-v1-17-5`
 
 `instruqt/k3s-v1-17-4`
+</details>
 
 ## Usage on Instruqt
 There is no need to build this packer image yourself. It has already been built.
