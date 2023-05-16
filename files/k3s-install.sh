@@ -17,6 +17,10 @@ timeout 180 /bin/bash -c \
   'until stat /var/lib/cloud/instance/boot-finished 2>/dev/null; do echo waiting ...; sleep 1; done'
 
 export DEBIAN_FRONTEND=noninteractive
+
+systemctl stop unattended-upgrades
+apt-get -y purge unattended-upgrades
+
 apt-get update
 apt-get -y install \
     git curl wget \
