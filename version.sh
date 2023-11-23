@@ -25,6 +25,7 @@ if (! gcloud compute images describe $NEW_VERSION --project $PROJECT 1>/dev/null
 then 
     echo "Instruqt image does not exist. Building the image..."
     echo "Image to build: $PROJECT/$NEW_VERSION"
+    ./make
 else
     echo "Instruqt image exists. Nothing to do."
 fi

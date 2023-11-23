@@ -2,6 +2,15 @@ variable "k3s_version" {
   type    = string
 }
 
+packer {
+  required_plugins {
+    googlecompute = {
+      source  = "github.com/hashicorp/googlecompute"
+      version = "~> 1"
+    }
+  }
+}
+
 source "googlecompute" "k3s" {
     project_id   = "instruqt"
     region       = "europe-west1"
