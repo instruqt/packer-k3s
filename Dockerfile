@@ -1,6 +1,6 @@
 FROM hashicorp/packer:latest
 
-ARG K3S_VERSION=''
+ARG K3S_VERSION=""
 
 RUN apk update; apk upgrade; 
 RUN apk add curl jq make

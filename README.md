@@ -1,8 +1,44 @@
-# Instruqt packer image for K3s
+# Build the official Instruqt K3S images
 
-This repo contains the source files to build a K3s image for Instruqt.
+This repo builds offical Instruqt K3s images.
 
-What's includes:
+It runs at 3 am on the 15th of every month using GitHub actions.
+
+When run, the `version.sh` script checks to see if Instruqt has the latest
+K3S image in GCP. If not, it uses Packer to build it.
+
+## Running locally
+
+Build the container locally
+
+`docker build . -t packer-k3s`
+
+Run the container locally:
+
+```
+docker run \
+  --volume $HOME/.config/gcloud/:/.config/gcloud/ \
+  --env GOOGLE_APPLICATION_CREDENTIALS=/.config/gcloud/application_default_credentials.json \
+  packer-k3s
+```
+
+To debug image building issues:
+
+```
+docker run \
+  --volume $HOME/.config/gcloud/:/.config/gcloud/ \
+  --env GOOGLE_APPLICATION_CREDENTIALS=/.config/gcloud/application_default_credentials.json \
+  -it --entrypoint ash packer-k3s
+```
+
+NOTE: Google auth credentials are required to allow the container to query for the existing images. To provide local credentials, you may have to run:
+
+>`gcloud auth login --update-adc`
+
+
+## K3S image details
+
+The official Instruqt K3S image includes:
 
 - K3s
 - Helm
@@ -70,12 +106,9 @@ Images are built upon releases on the [K3s repo](https://github.com/k3s-io/k3s).
 
 ## Usage on Instruqt
 
-There is no need to build this packer image yourself. It has already been built.
 We advise you to use machine type `n1-standard-2` or higher to ensure stability.
 
-### How to configure this image in your config.yml
-
-Use the following config in your Instruqt config.yml to use this image:
+Use the following config in your Instruqt `config.yml` to use this image:
 
 ```yaml
 version: "2"
