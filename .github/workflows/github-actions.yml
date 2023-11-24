@@ -1,0 +1,39 @@
+# This is a basic workflow to help you get started with Actions
+ 
+name: K3S image update check
+on:
+  # Triggers at 3:00 am on the 15th of every month 
+  schedule:
+    - cron: "0 3 15 * *"
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: 'Authenticate to Google Cloud'
+              id: 'auth'
+              uses: 'google-github-actions/auth@v0.4.0'
+              with:
+                token_format: 'access_token'
+                workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+                service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+
+            # - name: 'Create google.env file'
+            #   run: |
+            #     touch ./google.env
+            #     echo API_ENDPOINT="https://xxx.execute-api.us-west-2.amazonaws.com" >> .env
+            #     echo API_KEY=${{ secrets.API_KEY }} >> ./google.env
+
+            - name: Build packer-k3s container
+              run: docker build . -t packer-k3s
+
+            - name: Run packer-k3s container 🚀
+              run: |
+                docker run --env-file ./google.env packer-k3s
+                  --volume $GITHUB_WORKSPACE:/workspace
+                  --mount type=bind,source=$GOOGLE_APPLICATION_CREDENTIALS,target=/workspace/creds.json 
+                  --env GOOGLE_APPLICATION_CREDENTIALS=/workspace/creds.json
+                  --env CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/workspace/creds.json
+                  --env GOOGLE_GHA_CREDS_PATH=/workspace/creds.json
