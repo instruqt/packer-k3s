@@ -22,6 +22,7 @@ jobs:
       - name: Get K3s version
         id: collect
         run: |-
+          set -x
           # Get latest K3s version
           CURRENT_VERSION="0.0.0"
           K3S_VERSION=${{inputs.version}}
