@@ -22,9 +22,7 @@ jobs:
       - name: Get K3s version
         id: collect
         run: |-
-          set -x
           # Get latest K3s version
-          CURRENT_VERSION="0.0.0"
           K3S_VERSION=${{inputs.version}}
           if [ -z "$K3S_VERSION" ]; then
             K3S_VERSION=$(curl -s https://api.github.com/repos/k3s-io/k3s/releases | \
@@ -40,11 +38,11 @@ jobs:
               head -n 1)
           fi
 
-          echo "version=$K3S_VERSION" >> "$GITHUB_OUTPUT"
+          echo "latest=$K3S_VERSION" >> "$GITHUB_OUTPUT"
           echo "current=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
 
-          echo $K3S_VERSION
-          echo $CURRENT_VERSION
+          echo "latest=$K3S_VERSION"
+          echo "current=$CURRENT_VERSION"
 
       - name: Authenticate
         if: ${{steps.version.outputs.latest != steps.version.outputs.current}}
