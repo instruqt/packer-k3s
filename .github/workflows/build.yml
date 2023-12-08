@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Get K3s version
-        id: collect
+        id: version
         run: |-
           # Get latest K3s version
           K3S_VERSION=${{inputs.version}}
@@ -70,7 +70,7 @@ jobs:
         run: |
           packer build -on-error=abort -color=false\
             -var 'project_id=${{env.PROJECT_ID}}' \
-            -var 'k3s_version=${{steps.collect.outputs.version}}' \
+            -var 'k3s_version=${{steps.version.outputs.version}}' \
             k3s.pkr.hcl
           
       - name: Tag
