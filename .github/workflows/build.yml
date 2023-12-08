@@ -26,7 +26,7 @@ jobs:
           K3S_VERSION=${{inputs.version}}
           if [ -z "$K3S_VERSION" ]; then
             K3S_VERSION=$(curl -s https://api.github.com/repos/k3s-io/k3s/releases | \
-              jq -r '.[].tag_name | select(contains("-rc") | not) | sub("(?<version>[0-9]+\\.[0-9]+\\.[0-9]+)\\+.*";.version)' | \
+              jq -r '.[].tag_name | select(contains("-rc") | not) | sub("(?<version>[0-9]+\\.[0-9]+\\.[0-9]+\\+.*)";.version)' | \
               sort -V -r | \
               head -n 1)
             CURRENT_VERSION=$(curl --silent --fail -L \
