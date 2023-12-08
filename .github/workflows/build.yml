@@ -1,0 +1,83 @@
+name: Build k3s
+on:
+  push:
+    branches:
+      - automate-build
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version of K3s to build an image for e.g. v1.28.3'
+        required: true 
+        type: string
+
+permissions:
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get K3s version
+        id: collect
+        run: |-
+          # Get latest K3s version
+          K3S_VERSION=${{inputs.version}}
+          if [ -z "$K3S_VERSION" ]; then
+            K3S_VERSION=$(curl -s https://api.github.com/repos/k3s-io/k3s/releases | \
+              jq -r '.[].tag_name | select(contains("-rc") | not) | sub("(?<version>[0-9]+\\.[0-9]+\\.[0-9]+)\\+.*";.version)' | \
+              sort -V -r | \
+              head -n 1)
+            CURRENT_VERSION=$(curl --silent --fail -L \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              https://api.github.com/repos/${{github.repository}}/tags | jq -r '.[] | .name' | \
+              sort -r | \
+              head -n 1)
+          fi
+
+          echo "version=$K3S_VERSION" >> "$GITHUB_OUTPUT"
+          echo "current=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+
+          echo $K3S_VERSION
+          echo $CURRENT_VERSION
+
+      - name: Authenticate
+        if: ${{steps.version.outputs.latest != steps.version.outputs.current}}
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT}}
+          
+      - name: Setup `packer`
+        if: ${{steps.version.outputs.latest != steps.version.outputs.current}}
+        uses: hashicorp/setup-packer@main
+        id: setup
+
+      - name: Init
+        if: ${{steps.version.outputs.latest != steps.version.outputs.current}}
+        id: init
+        run: "packer init k3s.pkr.hcl"
+
+      - name: Validate
+        if: ${{steps.version.outputs.latest != steps.version.outputs.current}}
+        id: validate
+        run: "packer validate k3s.pkr.hcl"
+
+      - name: Build
+        if: ${{steps.version.outputs.latest != steps.version.outputs.current}}
+        run: |
+          packer build -on-error=abort -color=false\
+            -var 'project_id=${{env.PROJECT_ID}}' \
+            -var 'k3s_version=${{steps.collect.outputs.version}}' \
+            k3s.pkr.hcl
+          
+      - name: Tag
+        if: ${{steps.version.outputs.latest != steps.version.outputs.current}}
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{steps.version.outputs.latest}}
+      
+
