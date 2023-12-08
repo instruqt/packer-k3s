@@ -63,12 +63,15 @@ jobs:
       - name: Validate
         if: ${{steps.version.outputs.latest != steps.version.outputs.current}}
         id: validate
-        run: "packer validate k3s.pkr.hcl"
+        run: "packer validate \
+          -var 'project_id=${{env.PROJECT_ID}}' \
+          -var 'k3s_version=${{steps.version.outputs.version}}' \
+          k3s.pkr.hcl"
 
       - name: Build
         if: ${{steps.version.outputs.latest != steps.version.outputs.current}}
         run: |
-          packer build -on-error=abort -color=false\
+          packer build -on-error=abort -color=false \
             -var 'project_id=${{env.PROJECT_ID}}' \
             -var 'k3s_version=${{steps.version.outputs.version}}' \
             k3s.pkr.hcl
