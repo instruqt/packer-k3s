@@ -23,6 +23,7 @@ jobs:
         id: collect
         run: |-
           # Get latest K3s version
+          CURRENT_VERSION="0.0.0"
           K3S_VERSION=${{inputs.version}}
           if [ -z "$K3S_VERSION" ]; then
             K3S_VERSION=$(curl -s https://api.github.com/repos/k3s-io/k3s/releases | \
