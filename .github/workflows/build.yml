@@ -1,7 +1,8 @@
 name: Build k3s
 on:
-  schedule:
-    - cron: '0 0 * * *'
+  push:
+    branches:
+      - automate-build-alt
   workflow_dispatch:
     inputs:
       version:
