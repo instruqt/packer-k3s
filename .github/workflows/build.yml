@@ -15,6 +15,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+      
     steps:
       - id: latest-k3s
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
