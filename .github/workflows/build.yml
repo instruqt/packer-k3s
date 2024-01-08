@@ -1,0 +1,70 @@
+name: Build k3s
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version of K3s to build an image for e.g. v1.28.3'
+        required: true 
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - id: latest-k3s
+        uses: pozetroninc/github-action-get-latest-release@v0.7.0
+        with:
+          owner: k3s-io
+          repo: k3s
+          excludes: prerelease, draft
+
+      - id: tag-exists
+        uses: mukunku/tag-exists-action@v1.5.0
+        with: 
+          tag: ${{ steps.latest-k3s.outputs.release }}
+
+      - uses: actions/checkout@v2
+        if: ${{ steps.tag-exists.outputs.exists == 'false' }}
+
+      - name: Authenticate
+        if: ${{ steps.tag-exists.outputs.exists == 'false' }}
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT}}
+          
+      - name: Setup `packer`
+        if: ${{ steps.tag-exists.outputs.exists == 'false' }}
+        uses: hashicorp/setup-packer@main
+        id: setup
+
+      - name: Init
+        if: ${{ steps.tag-exists.outputs.exists == 'false' }}
+        id: init
+        run: "packer init k3s.pkr.hcl"
+
+      - name: Validate
+        if: ${{ steps.tag-exists.outputs.exists == 'false' }}
+        id: validate
+        run: "packer validate \
+          -var 'project_id=${{vars.PROJECT_ID}}' \
+          -var 'k3s_version=${{ steps.latest-k3s.outputs.release }}' \
+          k3s.pkr.hcl"
+
+      - name: Build
+        if: ${{ steps.tag-exists.outputs.exists == 'false' }}
+        run: |
+          packer build -on-error=abort -color=false \
+            -var 'project_id=${{vars.PROJECT_ID}}' \
+            -var 'k3s_version=${{ steps.latest-k3s.outputs.release }}' \
+            k3s.pkr.hcl
+          
+      - name: Tag
+        if: ${{ steps.tag-exists.outputs.exists == 'false' }}
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.latest-k3s.outputs.release }}
+      
+
