@@ -19,7 +19,7 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-      
+
     steps:
       - id: latest-k3s
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
@@ -41,7 +41,8 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           project_id: instruqt
-          workload_identity_provider: ${{ vars.GH_GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
+          workload_identity_provider: ${{ secrets.GH_GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT }}
           
       - name: Setup `packer`
         if: ${{ steps.tag-exists.outputs.exists == 'false' }}
