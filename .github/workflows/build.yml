@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'The version of K3s to build an image for e.g. v1.28.3'
-        required: true 
+        description: 'The version of K3S to build an image for, e.g. v1.29.0+k3s1'
+        required: false 
         type: string
 
 jobs:
