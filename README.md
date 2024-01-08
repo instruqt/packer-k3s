@@ -1,8 +1,10 @@
 # Build the official Instruqt K3S images
 
-This repo builds offical Instruqt K3s images.
+This repo builds offical Instruqt K3s images, based on the official [k3s releases](https://github.com/k3s-io/k3s/releases).
 
-It runs at 3 am on the 15th of every month using GitHub actions.
+This runs a daily build, to check for new releases (excluding pre-releases), and builds a new image when there is a new version available.
+
+
 
 When run, the `version.sh` script checks to see if Instruqt has the latest
 K3S image in GCP. If not, it uses Packer to build it.
