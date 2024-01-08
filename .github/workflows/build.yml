@@ -1,10 +1,7 @@
 name: Build k3s
 on:
-  push:
-    branches:
-      - workload-identity-auth
-  # schedule:
-  #   - cron: '0 0 * * *'
+  schedule:
+    - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
       version:
@@ -75,5 +72,3 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.latest-k3s.outputs.release }}
-      
-
