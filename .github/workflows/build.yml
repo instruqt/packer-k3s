@@ -25,10 +25,14 @@ jobs:
           repo: k3s
           excludes: prerelease, draft
 
+      - id: k3s-version
+        run: |
+          echo "release=${{ (github.event.inputs.version != '') && github.event.inputs.version || steps.latest-k3s.outputs.release }}" >> $GITHUB_OUTPUT
+
       - id: tag-exists
         uses: mukunku/tag-exists-action@v1.5.0
         with: 
-          tag: ${{ steps.latest-k3s.outputs.release }}
+          tag: ${{ steps.k3s-version.outputs.release }}
 
       - uses: actions/checkout@v2
         if: ${{ steps.tag-exists.outputs.exists == 'false' }}
@@ -55,7 +59,7 @@ jobs:
         id: validate
         run: "packer validate \
           -var 'project_id=${{vars.PROJECT_ID}}' \
-          -var 'k3s_version=${{ steps.latest-k3s.outputs.release }}' \
+          -var 'k3s_version=${{ steps.k3s-version.outputs.release }}' \
           k3s.pkr.hcl"
 
       - name: Build
@@ -63,7 +67,7 @@ jobs:
         run: |
           packer build -on-error=abort -color=false \
             -var 'project_id=${{vars.PROJECT_ID}}' \
-            -var 'k3s_version=${{ steps.latest-k3s.outputs.release }}' \
+            -var 'k3s_version=${{ steps.k3s-version.outputs.release }}' \
             k3s.pkr.hcl
           
       - name: Tag
@@ -71,4 +75,4 @@ jobs:
         uses: tvdias/github-tagger@v0.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.latest-k3s.outputs.release }}
+          tag: ${{ steps.k3s-version.outputs.release }}
