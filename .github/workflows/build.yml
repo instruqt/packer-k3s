@@ -41,8 +41,7 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           project_id: instruqt
-          workload_identity_provider: ${{ secrets.GH_GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT }}
+          credentials_json: ${{ secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT }}
           
       - name: Setup `packer`
         if: ${{ steps.tag-exists.outputs.exists == 'false' }}
