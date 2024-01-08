@@ -63,14 +63,16 @@ The official Instruqt K3S image includes:
 
 Images are built upon releases on the [K3s repo](https://github.com/k3s-io/k3s). This is a list of images available:
 
+`instruqt/k3s-v1-28-5`
+
 `instruqt/k3s-v1-27-1`
 
 `instruqt/k3s-v1-26-4`
 
-`instruqt/k3s-v1-25-0`
-
 <details>
   <summary>List of deprecated images</summary>
+
+`instruqt/k3s-v1-25-0`
 
 `instruqt/k3s-v1-24-4`
 
