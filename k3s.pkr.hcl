@@ -33,9 +33,10 @@ source "googlecompute" "k3s" {
   image_family = regex_replace("k3s-${regex_replace(var.k3s_version, "\\+.*$", "")}", "[^a-zA-Z0-9_-]", "-")
   image_name   = regex_replace("k3s-${var.k3s_version}-${uuidv4()}", "[^a-zA-Z0-9_-]", "-")
 
-  source_image_family = "ubuntu-2204-lts"
-  machine_type        = "n1-standard-4"
-  disk_size           = 20
+  source_image_family             = "ubuntu-2204-lts"
+  machine_type                    = "n1-standard-4"
+  disk_size                       = 20
+  disable_default_service_account = true
 
   ssh_username = "root"
 }
