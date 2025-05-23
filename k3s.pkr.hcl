@@ -61,6 +61,11 @@ build {
   }
 
   provisioner "file" {
+    source      = "files/registries.yaml"
+    destination = "/etc/rancher/k3s/registries.yaml"
+  }
+
+  provisioner "file" {
     source      = "files/k3s-start.sh"
     destination = "/usr/local/bin/k3s-start.sh"
   }
