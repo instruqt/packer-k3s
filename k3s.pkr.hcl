@@ -60,6 +60,15 @@ build {
     destination = "/etc/systemd/system/"
   }
 
+  provisioner "shell" {
+    inline = ["mkdir -p /etc/rancher/k3s/"]
+  }
+
+  provisioner "file" {
+    source      = "files/registries.yaml"
+    destination = "/etc/rancher/k3s/registries.yaml"
+  }
+
   provisioner "file" {
     source      = "files/k3s-start.sh"
     destination = "/usr/local/bin/k3s-start.sh"
