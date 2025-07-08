@@ -125,7 +125,7 @@ Use the following config in your Instruqt `config.yml` to use this image:
 version: "2"
 virtualmachines:
   - name: kubernetes
-    image: instruqt/k3s-v1-27-1
+    image: instruqt/k3s-v1-33-2
     shell: /usr/bin/start.sh
     machine_type: n1-standard-2
 ```
@@ -155,17 +155,17 @@ This will switch it's runtime mode to Worker, and will join the cluster defined 
 version: "2"
 virtualmachines:
   - name: server
-    image: instruqt/k3s-v1-27-1
+    image: instruqt/k3s-v1-33-2
     shell: /usr/bin/start.sh
     machine_type: n1-standard-2
   - name: worker1
-    image: instruqt/k3s-v1-27-1
+    image: instruqt/k3s-v1-33-2
     shell: /bin/bash
     machine_type: n1-standard-2
     environment:
       K3S_CONTROL_PLANE_HOSTNAME: server
   - name: worker2
-    image: instruqt/k3s-v1-27-1
+    image: instruqt/k3s-v1-33-2
     shell: /bin/bash
     machine_type: n1-standard-2
     environment:
