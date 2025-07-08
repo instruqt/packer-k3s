@@ -46,9 +46,6 @@ fi
 export INSTALL_K3S_SKIP_START=true
 curl -sfL https://get.k3s.io | sh -
 
-# Configure CoreDNS to use host resolver as fallback, so it can resolve other hosts in the sandbox
-echo "K3S_RESOLV_CONF=/run/systemd/resolve/resolv.conf" >> /etc/systemd/system/k3s.service.env
-
 echo "alias k=kubectl" >> /root/.bash_aliases
 kubectl completion bash >/etc/bash_completion.d/kubectl
 mkdir -p /root/.kube

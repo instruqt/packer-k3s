@@ -3,17 +3,17 @@ variable "k3s_version" {
 }
 
 variable "project_id" {
-	type = string
+  type = string
 }
 
 variable "region" {
-	type = string
-	default = "europe-west1"
+  type    = string
+  default = "europe-west1"
 }
 
 variable "zone" {
-	type = string
-	default = "europe-west1-b"
+  type    = string
+  default = "europe-west1-b"
 }
 
 packer {
@@ -54,6 +54,7 @@ build {
   provisioner "file" {
     sources = [
       "files/k3s.service",
+      "files/k3s.service.env",
       "files/kubectl-proxy.service",
       "files/kube-dashboard.service",
     ]
