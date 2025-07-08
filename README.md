@@ -172,6 +172,10 @@ virtualmachines:
       K3S_CONTROL_PLANE_HOSTNAME: server
 ```
 
+### Hostname resolution
+
+The cluster uses CoreDNS for name resolution. By default CoreDNS only resolves DNS names within the cluster. In this image CoreDNS has been configured to use the host resolver as fallback. This means that any hostnames that do not exist within the cluster will be resolved by the host. This allows you to resolve other hosts in the sandbox configuration using their configured hostname.
+
 ## Enabling kubectl autocompletion
 
 To enable kubectl autocompletion, add the following lines to the `setup` script of your **first** challenge:
