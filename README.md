@@ -176,6 +176,10 @@ virtualmachines:
 
 K3s uses CoreDNS for name resolution. By default CoreDNS only resolves DNS names within the cluster. In this image CoreDNS has been configured to use the host resolver as fallback. This means that any hostnames that do not exist within the cluster will be resolved by the host. This allows you to resolve other hosts in the sandbox configuration using their configured hostname.
 
+This is done by setting the resolv-conf env var (`K3S_RESOLV_CONF`) to point to the host's `resolv.conf`.
+
+K3s cluster defined hostnames take precedence over sandbox defined hosts. If there is a duplicate (by running a pod with the same name as a sandbox host), the resolved IP address will be that of the pod.
+
 ## Enabling kubectl autocompletion
 
 To enable kubectl autocompletion, add the following lines to the `setup` script of your **first** challenge:
