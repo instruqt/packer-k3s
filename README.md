@@ -4,8 +4,6 @@ This repo builds offical Instruqt K3s images, based on the official [k3s release
 
 This runs a daily build, to check for new releases (excluding pre-releases), and builds a new image when there is a new version available.
 
-
-
 When run, the `version.sh` script checks to see if Instruqt has the latest
 K3S image in GCP. If not, it uses Packer to build it.
 
@@ -35,8 +33,7 @@ docker run \
 
 NOTE: Google auth credentials are required to allow the container to query for the existing images. To provide local credentials, you may have to run:
 
->`gcloud auth login --update-adc`
-
+> `gcloud auth login --update-adc`
 
 ## K3S image details
 
@@ -63,6 +60,17 @@ The official Instruqt K3S image includes:
 
 Images are built upon releases on the [K3s repo](https://github.com/k3s-io/k3s). This is a list of images available:
 
+`instruqt/k3s-v1-33-2`
+
+`instruqt/k3s-v1-32-4`
+
+<details>
+  <summary>List of deprecated images</summary>
+
+`instruqt/k3s-v1-31-4`
+
+`instruqt/k3s-v1-30-6`
+
 `instruqt/k3s-v1-29-0`
 
 `instruqt/k3s-v1-28-5`
@@ -70,9 +78,6 @@ Images are built upon releases on the [K3s repo](https://github.com/k3s-io/k3s).
 `instruqt/k3s-v1-27-1`
 
 `instruqt/k3s-v1-26-4`
-
-<details>
-  <summary>List of deprecated images</summary>
 
 `instruqt/k3s-v1-25-0`
 
