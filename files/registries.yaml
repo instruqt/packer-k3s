@@ -1,4 +1,4 @@
 mirrors:
   docker.io:
     endpoint:
-      - "https://mirror.gcr.io"
+      - "https://docker.registry.instruqt.io/"
