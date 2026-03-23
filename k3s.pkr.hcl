@@ -35,7 +35,7 @@ source "googlecompute" "k3s" {
 
   source_image_family             = "ubuntu-2204-lts"
   machine_type                    = "n1-standard-4"
-  disk_size                       = 20
+  disk_size                       = 50
   disable_default_service_account = true
 
   ssh_username = "root"
