@@ -47,14 +47,14 @@ source "googlecompute" "k3s" {
 
 source "qemu" "k3s" {
   iso_url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
-  iso_checksum     = "none"
+  iso_checksum     = "file:https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
   disk_image       = true
   output_directory = "output-k3s"
   vm_name          = "k3s-vm.qcow2"
   format           = "qcow2"
   disk_size        = "50G"
 
-  accelerator  = "none"
+  accelerator  = "kvm"
   machine_type = "q35"
   cpus         = 4
   memory       = 4096
