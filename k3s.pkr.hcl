@@ -22,6 +22,10 @@ packer {
       source  = "github.com/hashicorp/googlecompute"
       version = "~> 1"
     }
+    qemu = {
+      source  = "github.com/hashicorp/qemu"
+      version = "~> 1"
+    }
   }
 }
 
@@ -41,8 +45,39 @@ source "googlecompute" "k3s" {
   ssh_username = "root"
 }
 
+source "qemu" "k3s" {
+  iso_url          = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
+  iso_checksum     = "file:https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS"
+  disk_image       = true
+  output_directory = "output-k3s"
+  vm_name          = "k3s-vm.qcow2"
+  format           = "qcow2"
+  disk_size        = "50G"
+
+  accelerator  = "kvm"
+  machine_type = "q35"
+  cpus         = 4
+  memory       = 4096
+
+  headless         = true
+  ssh_username     = "root"
+  ssh_password     = "packer"
+  ssh_timeout      = "5m"
+  shutdown_command = "shutdown -P now"
+
+  cd_files = ["cloud-init/meta-data", "cloud-init/user-data"]
+  cd_label = "cidata"
+
+  qemuargs = [
+    ["-serial", "mon:stdio"],
+  ]
+}
+
 build {
-  sources = ["source.googlecompute.k3s"]
+  sources = [
+    "source.googlecompute.k3s",
+    "source.qemu.k3s",
+  ]
 
   provisioner "shell" {
     script = "files/k3s-install.sh"

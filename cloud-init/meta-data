@@ -1,0 +1,2 @@
+instance-id: packer-k3s
+local-hostname: packer-k3s
